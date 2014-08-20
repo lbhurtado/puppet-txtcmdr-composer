@@ -1,15 +1,19 @@
-class composer (
-) {
+class composer ($path = "/vagrant") {
 
   exec { "curl -sS https://getcomposer.org/installer | php":
-    cwd     => "/home/vagrant",
-    creates => "/home/vagrant/composer.phar",
+    cwd     => "/usr/bin",
+    creates => "/usr/bin/composer.phar",
   }
 
-  exec { "mv composer.phar /usr/bin/composer":
-    cwd     => "/home/vagrant",
-    creates => "/usr/bin/composer",
-    require => Exec ["curl -sS https://getcomposer.org/installer | php"]
+  file { "/usr/bin/composer.phar":
+    ensure  => link,
+    target  => "/usr/bin/composer",
+    mode    => "a+x",
+    require => Exec [ "curl -sS https://getcomposer.org/installer | php" ],
   }
 
+  composer::install { $path:
+    require => File[ "/usr/bin/composer.phar" ],
+  }
+  
 }
