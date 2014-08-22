@@ -1,6 +1,7 @@
 class composer ($path = "/vagrant") {
 
   exec { "curl -sS https://getcomposer.org/installer | php":
+    command => "curl -sSk https://getcomposer.org/installer | php -- --disable-tls --max-time 900",
     cwd     => "/usr/bin",
     creates => "/usr/bin/composer.phar",
   }

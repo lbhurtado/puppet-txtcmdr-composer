@@ -5,7 +5,7 @@ define composer::install( $path = "/vagrant" ) {
   }
 
   exec { "composer-install":
-    command     => "composer --verbose --no-interaction create-project symfony/framework-standard-edition ./",
+    command     => "COMPOSER_PROCESS_TIMEOUT=4000 composer --verbose --no-interaction create-project symfony/framework-standard-edition ./",
     cwd         => $path,
     environment => "COMPOSER_HOME=/usr/bin/",
     creates     => "${path}/web",
